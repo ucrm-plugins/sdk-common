@@ -1,0 +1,18 @@
+<?php
+declare(strict_types=1);
+
+namespace SpaethTech\UCRM\SDK\Exceptions;
+
+use Exception;
+
+/**
+ * Class PluginNotInitializedException
+ *
+ * @package MVQN\UCRM\Plugins\Exceptions
+ * @author Ryan Spaeth <rspaeth@spaethtech.com>
+ * @final
+ */
+final class PluginNotInitializedException extends Exception
+{
+}
+

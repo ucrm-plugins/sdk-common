@@ -1,0 +1,62 @@
+{
+    "name": "ucrm-plugins/sdk-common",
+    "description": "A common library for the UCRM Plugin SDK.",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Spaeth",
+            "email": "rspaeth@spethtech.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.4.26",
+
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-zip": "*",
+        "ext-pdo": "*",
+        "ext-intl": "*",
+        "ext-yaml": "*",
+        "ext-simplexml": "*",
+
+        "composer/composer": "^2.0",
+        "composer-plugin-api": "^2.0",
+
+
+
+
+
+        "nette/php-generator": "~3.2",
+        "defuse/php-encryption": "~2.2",
+        "vlucas/phpdotenv": "~2.5",
+        "symfony/yaml": "^4.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "files": [
+            "globals.php"
+        ],
+        "psr-4": {
+            "SpaethTech\\UCRM\\SDK\\": [ "src/", "tests/" ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    },
+    "scripts": {
+    },
+    "extra": {
+        "class": "SpaethTech\\UCRM\\SDK\\Composer\\Plugins\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "ucrm-plugins/sdk-composer": true
+        }
+    }
+}

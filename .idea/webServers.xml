@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="3126681a-ca56-4729-b725-11f39de0fddf" name="vagrant">
+        <fileTransfer rootFolder="/data/ucrm/data/plugins/example" accessType="SFTP" host="192.168.33.10" port="9022" sshConfigId="cf911f8a-f5e0-4a8f-a43e-535508282a97" sshConfig="nginx@localhost:9022">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

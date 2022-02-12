@@ -1,0 +1,221 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "information": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "ucrmVersionCompliancy": {
+                    "type": "object",
+                    "properties": {
+                        "min": {
+                            "type": "string"
+                        },
+                        "max": {
+                            "type": "null"
+                        }
+                    },
+                    "required": [
+                        "min",
+                        "max"
+                    ]
+                },
+                "unmsVersionCompliancy": {
+                    "type": "object",
+                    "properties": {
+                        "min": {
+                            "type": "string"
+                        },
+                        "max": {
+                            "type": "null"
+                        }
+                    },
+                    "required": [
+                        "min",
+                        "max"
+                    ]
+                },
+                "author": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "displayName",
+                "description",
+                "url",
+                "version",
+                "ucrmVersionCompliancy",
+                "unmsVersionCompliancy",
+                "author"
+            ]
+        },
+        "configuration": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "key": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "required": {
+                            "type": "integer",
+                            "oneOf": [
+                                {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                }
+                            ]
+                        },
+                        "type": {
+                            "type": "string",
+                            "oneOf": [
+                                {
+                                    "enum": [
+                                        "text",
+                                        "textarea",
+                                        "checkbox",
+                                        "choice",
+                                        "date",
+                                        "datetime",
+                                        "file"
+                                    ]
+                                }
+                            ]
+                        },
+                        "choices": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "label"
+                    ]
+                }
+            ]
+        },
+        "menu": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "key": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string",
+                            "oneOf": [
+                                {
+                                    "enum": [
+                                        "admin",
+                                        "client"
+                                    ]
+                                }
+                            ]
+                        },
+                        "target": {
+                            "type": "string",
+                            "oneOf": [
+                                {
+                                    "enum": [
+                                        "blank",
+                                        "iframe"
+                                    ]
+                                }
+                            ]
+                        },
+                        "parameters": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "type",
+                        "target"
+                    ]
+                }
+            ]
+        },
+        "widgets": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "position": {
+                            "type": "string",
+                            "oneOf": [
+                                {
+                                    "enum": [
+                                        "dashboard",
+                                        "client/overview",
+                                        "client/service",
+                                        "client-zone/dashboard",
+                                        "client-zone/service"
+                                    ]
+                                }
+                            ]
+                        },
+                        "iframeHeight": {
+                            "type": "integer"
+                        },
+                        "iframeUrlParameters": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "position",
+                        "iframeHeight"
+                    ]
+                }
+            ]
+        },
+        "paymentButton": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "urlParameters": {
+                    "type": "object"
+                }
+            },
+            "required": [
+                "label"
+            ]
+        }
+    },
+    "required": [
+        "version",
+        "information"
+    ]
+}

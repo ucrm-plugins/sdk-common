@@ -1,0 +1,59 @@
+{
+    "name": "mvqn/ucrm-plugin-template",
+    "description": "A project template for developing UCRM Plugins.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Spaeth",
+            "email": "rspaeth@spaethtech.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "~7.3",
+
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ucrm-plugins/sdk-common": "dev-master"
+
+    },
+    "require-dev": {
+        "ext-zip": "*"
+
+
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/server/App/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    },
+    "scripts": {
+        "example": [
+            "App\\Composer\\Project::configureSFTP"
+        ]
+
+
+    },
+    "config": {
+        "vendor-dir": "src/server/vendor/",
+        "process-timeout": 0,
+        "allow-plugins": {
+            "ucrm-plugins/sdk-common": true
+        }
+
+    },
+    "archive": {
+        "exclude": [
+            "src/server/test.txt",
+            "src/.env"
+        ]
+    },
+    "extra": {
+
+    }
+
+}

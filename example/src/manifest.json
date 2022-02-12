@@ -1,0 +1,36 @@
+{
+    "version": "1",
+    "information": {
+        "name": "example",
+        "displayName": "Plugin Example",
+        "description": "An example plugin for testing the UCRM SDK.",
+        "url": "https://gitlab.com/ucrm-plugins/example",
+        "version": "1.0.0",
+        "ucrmVersionCompliancy": {
+            "min": "3.4.2",
+            "max": null
+        },
+        "unmsVersionCompliancy": {
+            "min": "1.4.2",
+            "max": null
+        },
+        "author": "Ryan Spaeth"
+    },
+    "menu": [
+        {
+            "key": "Add-Ons",
+            "label": "Plugin Example",
+            "type": "admin",
+            "target": "iframe"
+        }
+    ],
+    "configuration": [
+        {
+            "key": "development",
+            "label": "Development Mode",
+            "description": "WARNING: This enables development mode and should only be enabled during development or when instructed to do so by the Plugin's developer.",
+            "required": 0,
+            "type": "checkbox"
+        }
+    ]
+}
