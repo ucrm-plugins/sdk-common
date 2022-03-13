@@ -3,6 +3,7 @@
     "description": "A common library for the UCRM Plugin SDK.",
     "type": "composer-plugin",
     "license": "MIT",
+    "homepage": "https://spaethtech.jetbrains.space/p/ucrm-plugins/repositories/sdk-common",
     "authors": [
         {
             "name": "Ryan Spaeth",
