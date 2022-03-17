@@ -40,11 +40,12 @@
             "globals.php"
         ],
         "psr-4": {
-            "SpaethTech\\UCRM\\SDK\\": [ "src/", "tests/" ]
+            "SpaethTech\\UCRM\\SDK\\": [ "src/" ]
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "SpaethTech\\UCRM\\SDK\\": [ "src/", "tests/" ]
         }
     },
     "scripts": {

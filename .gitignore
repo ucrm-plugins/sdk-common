@@ -2,9 +2,3 @@
 .idea/
 vendor/
 .env
-
-.vagrant/
-
-unms/
-!unms/app/xdebug/
-!unms/app/docker-compose.override.yml
