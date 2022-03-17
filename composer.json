@@ -26,7 +26,6 @@
         "composer/composer": "^2.0",
         "composer-plugin-api": "^2.0",
 
-
         "nette/php-generator": "~3.2",
         "defuse/php-encryption": "~2.2",
         "vlucas/phpdotenv": "~2.5",
