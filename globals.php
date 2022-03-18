@@ -13,6 +13,11 @@ declare(strict_types=1);
  *
  */
 
+$test = \Composer\Factory::getComposerFile();
+var_dump($test);
+
+
+
 #region CONTAINER
 
 if ( !defined( "__CONTAINER_ID__" ) )
