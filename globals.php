@@ -13,8 +13,7 @@ declare(strict_types=1);
  *
  */
 
-$test = \Composer\Factory::getComposerFile();
-var_dump($test);
+define("COMPOSER_FILE", \Composer\Factory::getComposerFile());
 
 
 
