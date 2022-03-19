@@ -13,7 +13,7 @@ declare(strict_types=1);
  *
  */
 
-define("COMPOSER_FILE", \Composer\Factory::getComposerFile());
+define("COMPOSER_FILE", __FILE__);
 
 
 
