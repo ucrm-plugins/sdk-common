@@ -13,7 +13,7 @@ declare(strict_types=1);
  *
  */
 
-define("COMPOSER_FILE", __FILE__);
+define("COMPOSER_FILE", $_SERVER["PHP_SELF"]);
 
 
 
