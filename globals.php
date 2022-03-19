@@ -13,10 +13,6 @@ declare(strict_types=1);
  *
  */
 
-define("COMPOSER_FILE", $_SERVER["PHP_SELF"]);
-
-
-
 #region CONTAINER
 
 if ( !defined( "__CONTAINER_ID__" ) )
