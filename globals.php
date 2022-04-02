@@ -44,12 +44,12 @@ if( !defined( "__UCRM_VERSION__" ) )
 
 #region PROJECT
 
-if( !defined( "__PROJECT_DIR__" ) )
+if (!defined("__PROJECT_DIR__"))
 {
     define("__PROJECT_DIR__", realpath(__DIR__."/../../../../../"));
 }
 
-if( !defined( "__PROJECT_NAME__" ) )
+if (!defined("__PROJECT_NAME__"))
 {
     $path = realpath( __PROJECT_DIR__."/composer.json" );
     
@@ -65,13 +65,13 @@ if( !defined( "__PROJECT_NAME__" ) )
 
 #region PLUGIN
 
-if( !defined( "__PLUGIN_DIR__" ) )
+if (!defined("__PLUGIN_DIR__"))
 {
-    $path = __PROJECT_DIR__ . ( __DEPLOYMENT__ === DEPLOYMENT::REMOTE ? "" : "/src" );
-    define( "__PLUGIN_DIR__", realpath( $path ) );
+    $path = __PROJECT_DIR__ . (__DEPLOYMENT__ === DEPLOYMENT::REMOTE ? "" : "/src");
+    define("__PLUGIN_DIR__", realpath($path));
 }
 
-if( !defined( "__PLUGIN_NAME__" ) )
+if (!defined("__PLUGIN_NAME__"))
 {
     define("__PLUGIN_NAME__", file_exists(__PLUGIN_DIR__."/manifest.json")
         ? json_decode(file_get_contents(__PLUGIN_DIR__."/manifest.json"), TRUE)["information"]["name"]
