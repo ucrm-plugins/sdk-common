@@ -10,7 +10,7 @@ use Exception;
  * Class Patterns
  *
  * @package MVQN\Common
- * @author Ryan Spaeth <rspaeth@mvqn.net>
+ * @author Ryan Spaeth <rspaeth@spaethtech.com>
  * @final
  */
 final class Patterns
