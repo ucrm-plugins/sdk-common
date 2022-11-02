@@ -1,7 +1,7 @@
 {
     "name": "ucrm-plugins/sdk-common",
     "description": "A common library for the UCRM Plugin SDK.",
-    "type": "composer-plugin",
+    "type": "library",
     "license": "MIT",
     "homepage": "https://gitlab.com/ucrm-plugins/sdk-common.git",
     "authors": [
@@ -14,7 +14,6 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.4.26",
-
         "ext-curl": "*",
         "ext-json": "*",
         "ext-zip": "*",
@@ -22,10 +21,6 @@
         "ext-intl": "*",
         "ext-yaml": "*",
         "ext-simplexml": "*",
-
-        "composer/composer": "^2.0",
-        "composer-plugin-api": "^2.0",
-
         "nette/php-generator": "~3.2",
         "defuse/php-encryption": "~2.2",
         "vlucas/phpdotenv": "~2.5",
@@ -39,22 +34,18 @@
             "globals.php"
         ],
         "psr-4": {
-            "SpaethTech\\UCRM\\SDK\\": [ "src/" ]
+            "SpaethTech\\UCRM\\SDK\\": [
+                "src/"
+            ]
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SpaethTech\\UCRM\\SDK\\": [ "src/", "tests/" ]
+            "SpaethTech\\UCRM\\SDK\\": [
+                "src/",
+                "tests/"
+            ]
         }
     },
-    "scripts": {
-    },
-    "extra": {
-        "class": "SpaethTech\\UCRM\\SDK\\Composer\\Plugins\\Plugin"
-    },
-    "config": {
-        "allow-plugins": {
-            "ucrm-plugins/sdk-composer": true
-        }
-    }
+    "scripts": {}
 }
