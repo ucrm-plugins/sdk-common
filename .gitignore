@@ -1,4 +1,4 @@
-.cache/
 .idea/
 vendor/
-.env
+**/.env
+composer.lock

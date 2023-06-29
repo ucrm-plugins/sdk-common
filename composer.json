@@ -30,9 +30,6 @@
         "phpunit/phpunit": "^9"
     },
     "autoload": {
-        "files": [
-            "globals.php"
-        ],
         "psr-4": {
             "SpaethTech\\UCRM\\SDK\\": [
                 "src/"
