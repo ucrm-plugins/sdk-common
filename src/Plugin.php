@@ -71,6 +71,9 @@ final class Plugin
      */
     public static function initialize(string $root = __PLUGIN_DIR__)
     {
+        //file_put_contents(PLUGIN_DIR."/data/plugin.log", "TESTING!", FILE_APPEND | LOCK_EX);
+
+
         #region REQUIRED: /
 
         // Get the absolute "root" path, in cases where a relative path is provided.
@@ -243,6 +246,12 @@ final class Plugin
         // ...
 
         self::$_initialized = true;
+    }
+
+    public static function stderrToLog(): void
+    {
+        fclose(STDERR);
+        $STDERR = fopen(PLUGIN_DIR."/data/plugin.log", "w");
     }
 
     /**
@@ -673,7 +682,7 @@ final class Plugin
         $code = "<?php " . /** @lang PHP */ <<<EOF
             /** @noinspection PhpUnused, PhpUnusedAliasInspection, SpellCheckingInspection, HttpUrlsUsage */
             declare(strict_types=1);
-            
+
             $_namespace;
             EOF;
 
@@ -843,14 +852,14 @@ final class Plugin
 
     #region ENVIRONMENT
 
-    
-    
+
+
     public static function isRunningOnUCRM()
     {
         if (file_exists("/usr/src/ucrm"))
             return true;
     }
-    
+
     /**
      * @param string $default
      * @return string
@@ -1108,9 +1117,9 @@ final class Plugin
         return $path ? Arrays::path( $yaml, $path, "." ) : $yaml;
 
     }
-    
-    
-    
+
+
+
 
     #region Locators
 

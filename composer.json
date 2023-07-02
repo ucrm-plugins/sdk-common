@@ -46,5 +46,20 @@
             ]
         }
     },
-    "scripts": {}
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../lib/sdk-*",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../../../spaethtech/php-monorepo/lib/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
 }
