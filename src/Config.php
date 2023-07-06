@@ -90,7 +90,7 @@ final class Config extends AutoObject
 
     /** @var PDO */
     protected static PDO $pdo;
-    
+
     /**
      * Executes prior to the very fist static __call() method and used to initialize the properties of this class.
      *
@@ -260,7 +260,7 @@ final class Config extends AutoObject
         $option = $options->where("code", "SERVER_PORT")->first();
         self::$serverPort = $option ? (int)$option->getValue() : null;
 
-        $properties = get_class_vars(Config::class);
+        $properties = get_class_vars(PluginConfig::class);
         if($properties["smtpPassword"] !== null)
             $properties["smtpPassword"] = str_repeat("*", strlen($properties["smtpPassword"]));
 

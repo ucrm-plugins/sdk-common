@@ -49,7 +49,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../../lib/sdk-*",
+            "url": "../../sdk/*",
             "options": {
                 "symlink": true
             }
