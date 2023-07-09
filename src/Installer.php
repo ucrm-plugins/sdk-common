@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace SpaethTech\UCRM\SDK;
 
 use SpaethTech\UCRM\SDK\Data\Database;
-use SpaethTech\UCRM\SDK\Data\Models\Plugin as PluginData;
-use SpaethTech\UCRM\SDK\Data\Models\AppKey as AppKeyData;
+use SpaethTech\UCRM\SDK\Data\Tables\AppKeyTable as AppKeyData;
+use SpaethTech\UCRM\SDK\Data\Tables\PluginTable as PluginData;
 
 final class Installer
 {

@@ -3,18 +3,14 @@ declare(strict_types=1);
 
 namespace SpaethTech\UCRM\SDK;
 
+use App\Settings;
 use Dotenv\Dotenv;
-
-use SpaethTech\UCRM\SDK\Exceptions\DatabaseConnectionException;
-use SpaethTech\UCRM\SDK\Exceptions\ModelClassException;
-use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
-
-use SpaethTech\UCRM\SDK\Data\Database;
-
 use Exception;
 use ReflectionException;
-
-use App\Settings;
+use SpaethTech\UCRM\SDK\Data\Database;
+use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
+use SpaethTech\UCRM\SDK\Exceptions\DatabaseConnectionException;
+use SpaethTech\UCRM\SDK\Exceptions\ModelClassException;
 
 /**
  * Class Mailer

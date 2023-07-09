@@ -9,15 +9,14 @@ use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\Key;
 use Dotenv\Dotenv;
+use PDO;
+use ReflectionException;
+use SpaethTech\UCRM\SDK\Data\Database;
+use SpaethTech\UCRM\SDK\Data\Tables\OptionTable;
+use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
+use SpaethTech\UCRM\SDK\Exceptions\CryptoKeyNotFoundException;
 use SpaethTech\UCRM\SDK\Exceptions\DatabaseConnectionException;
 use SpaethTech\UCRM\SDK\Exceptions\ModelClassException;
-use PDO;
-use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
-
-use SpaethTech\UCRM\SDK\Data\Database;
-use ReflectionException;
-use SpaethTech\UCRM\SDK\Exceptions\CryptoKeyNotFoundException;
-use SpaethTech\UCRM\SDK\Data\Models\Option;
 
 /**
  * Class Config
@@ -160,9 +159,9 @@ final class Config extends AutoObject
         }
 
         // Get a collection of all rows of the option table from the database!
-        $options = Option::select();
+        $options = OptionTable::select();
 
-        /** @var Option $option */
+        /** @var OptionTable $option */
 
         // LANGUAGE/LOCALE
         $option = $options->where("code", "APP_LOCALE")->first();
