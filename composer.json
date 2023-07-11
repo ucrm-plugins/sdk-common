@@ -21,6 +21,7 @@
         "ext-intl": "*",
         "ext-yaml": "*",
         "ext-simplexml": "*",
+        "doctrine/collections": "~2.1",
         "nette/php-generator": "~3.2",
         "defuse/php-encryption": "~2.2",
         "vlucas/phpdotenv": "~2.5",

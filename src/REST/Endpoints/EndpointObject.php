@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace SpaethTech\UCRM\SDK\REST\Endpoints;
 
+use Collection;
+use Psr\Http\Message\ResponseInterface;
 use SpaethTech\UCRM\SDK\Annotations\AnnotationReader;
-use SpaethTech\UCRM\SDK\Collections\Collection;
+use SpaethTech\UCRM\SDK\REST\RestClient;
+use SpaethTech\UCRM\SDK\REST\RestObject;
 use SpaethTech\UCRM\SDK\Support\Arrays;
 use SpaethTech\UCRM\SDK\Support\Strings;
-
-use Psr\Http\Message\ResponseInterface;
-use SpaethTech\UCRM\SDK\REST\RestObject;
-use SpaethTech\UCRM\SDK\REST\RestClient;
 
 /**
  * EndpointObject
@@ -23,17 +22,17 @@ abstract class EndpointObject extends RestObject
 {
     /** @const int The default JSON options for use when caching the annotations. */
     private const CACHE_JSON_OPTIONS = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT;
-    
+
     // =================================================================================================================
     // PROPERTIES (GLOBAL)
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * @var int|null $id
      * @unique
      */
     protected $id;
-    
+
     /**
      * @return int|null
      */
@@ -41,11 +40,11 @@ abstract class EndpointObject extends RestObject
     {
         return $this->id;
     }
-    
+
     // =================================================================================================================
     // CREATE (GLOBAL)
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * Attempts to INSERT this EndpointObject, using the class's annotated information via a HTTP POST Request.
      *
@@ -57,20 +56,20 @@ abstract class EndpointObject extends RestObject
     {
         /** @var self $data */
         $data = $this;
-        
+
         if(!$this->validate("post", $missing))
         {
             throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] Annotations for the '".get_class($this)."' class require valid values be set ".
                 "on all of the following properties before attempting an insert():\n> ".implode("\n> ", $missing)."\n");
         }
-        
+
         /** @var self $endpoint */
         $endpoint = self::post($data);
         return $endpoint;
     }
-    
+
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * Sends a HTTP POST Request on behalf of the EndpointObject, given optional parameters.
      *
@@ -83,17 +82,17 @@ abstract class EndpointObject extends RestObject
     public static function post(EndpointObject $data, array $params = [], ResponseInterface &$response = null): EndpointObject
     {
         $class = get_called_class();
-        
+
         // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getClassAnnotation("Endpoint");
-        
+
         $endpoint = array_key_exists("post", $endpoints) ? $endpoints["post"] : "";
-        
+
         if($endpoint === "")
             throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] An annotation like '@Endpoint { \"post\": \"/examples\" }' on the '$class' ".
                 "class must be declared in order to resolve this endpoint'");
-        
+
         if($params === [])
         {
             $parts = array_filter(explode("/", $endpoint),
@@ -102,7 +101,7 @@ abstract class EndpointObject extends RestObject
                     return strpos($part, ":") !== false;
                 }
             );
-            
+
             foreach ($parts as $param)
             {
                 $prop = str_replace(":", "", $param);
@@ -110,26 +109,26 @@ abstract class EndpointObject extends RestObject
                 {
                     $params[$prop] = $data->$prop;
                 }
-                
+
             }
         }
-        
+
         // Interpolate the URL patterns against any provided parameters.
         $endpoint = Patterns::interpolateUrl($endpoint, $params);
-        
+
         // Get an array of all Model properties, with any that do not belong in the POST method removed!
         $data = ($data !== null) ? $data->toArray("post") : [];
-        
+
         // Attempt to POST the specified EndpointObject.
         $body = RestClient::post($endpoint, $data, $response);
-        
+
         // IF the response is empty, something went VERY wrong!
         if($body === [])
         {
             //throw new \Exception("WTF???");
             //return [];
         }
-        
+
         // HANDLE ANY ERROR CODES HERE...
         if(array_key_exists("code", $body))
         {
@@ -143,21 +142,21 @@ abstract class EndpointObject extends RestObject
                     $body["message"]."\n".
                     json_encode($body["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
                 );
-                
+
                 // TODO: Add other response codes, as they are encountered!
-                
+
                 default:  break; // Likely the key "code" from an actual EndpointObject!
             }
         }
-        
+
         // Finally, return the instantiated EndpointObject!
         return new $class($body);
     }
-    
+
     // =================================================================================================================
     // READ (GLOBAL)
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * Sends an HTTP GET Request using the calling class's annotated information, for all objects at this EndpointObject.
      *
@@ -172,14 +171,14 @@ abstract class EndpointObject extends RestObject
     {
         // Get a reference to the type of EndpointObject calling this function.
         $class = get_called_class();
-        
+
         // THEN instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getClassAnnotation("Endpoint");
         $excludeId = $annotations->hasClassAnnotation("ExcludeId");
         $cached = $annotations->hasClassAnnotation("Cached");
         //$collection = $annotations->getClassAnnotation("Collection");
-        
+
         // IF no override path has been provided...
         if($override === "")
         {
@@ -187,25 +186,25 @@ abstract class EndpointObject extends RestObject
             if (!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
                 throw new \Exception("[MVQN\REST\Endpoints\Endpoint] An '@Endpoint { \"get\": \"/examples\" }' annotation on the class must " .
                     "be declared in order to resolve this endpoint'");
-            
-            
+
+
             if(RestClient::cacheDir() !== null && $cached)
             {
                 $file = RestClient::cachePath($class);
-                
+
                 if(file_exists($file))
                 {
                     $objects = json_decode(file_get_contents($file), true);
                     unset($objects["_cached"]);
                     $objects = array_values($objects);
-                    
+
                     $endpoints = new Collection($class, $objects);
-                    
+
                     return $endpoints;
                 }
-                
+
             }
-            
+
             // Interpolate the URL patterns against any provided parameters.
             $endpoint = Patterns::interpolateUrl($endpoints["get"], $params);
         }
@@ -214,12 +213,12 @@ abstract class EndpointObject extends RestObject
             // Interpolate the overridden URL pattern against any provided parameters.
             $endpoint = Patterns::interpolateUrl($override, $params);
         }
-        
+
         // Append any provided suffixes to the URL (i.e. query string).
         if($query !== [])
         {
             $pairs = [];
-            
+
             foreach($query as $key => $value)
             {
                 if(is_array($value) && !Strings::endsWith($key, "[]"))
@@ -228,21 +227,21 @@ abstract class EndpointObject extends RestObject
                     sort($value); // Necessary with encountered APIs.
                     $value = implode(",", $value);
                 }
-                
+
                 $pairs[] = "$key=$value";
             }
-            
+
             $endpoint .= "?".implode("&", $pairs);
         }
-        
+
         // Attempt to GET the specified EndpointObject.
         $response = RestClient::get($endpoint);
-        
+
         // IF the response is empty...
         if($response === [])
             // THEN return an empty collection, as we got nothing back!
             return new Collection($class, []);
-        
+
         // HANDLE ANY ERROR CODES HERE...
         if(array_key_exists("code", $response))
         {
@@ -252,63 +251,63 @@ abstract class EndpointObject extends RestObject
                 case 401: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] The REST Client was not authorized to make this request!");
                 case 403: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] The provided App Key does not have sufficient privileges!");
                 case 404: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] EndpointObject '$endpoint' was not found for class '$class'!");
-                
+
                 case 500: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] EndpointObject '$endpoint' returned: '{$response["message"]}'!");
-                
+
                 // TODO: Add other response codes, as they are encountered!
-                
+
                 default:  break; // Likely the key "code" from an actual EndpointObject!
             }
         }
-        
+
         // Handle shifting any single object responses into a single indexed array for further processing.
         $response = Arrays::is_assoc($response) ? [ $response ] : $response;
-        
+
         // Create a collection to store the object versions of the response.
         $endpoints = new Collection($class);
-        
+
         // Loop through each resulting object...
         foreach($response as $object)
         {
             $classObject = new $class($object);
-            
+
             // Remove the ID property, if the '@excludeId' annotation was set on this class.
             if($excludeId)
                 unset($classObject->id);
-            
+
             // Add the newly instantiated EndpointObject to the collection.
             $endpoints->push($classObject);
         }
-        
+
         if(RestClient::cacheDir() !== null && $cached)
         {
             $file = RestClient::cachePath($class);
-            
+
             if (!file_exists(dirname($file)))
                 mkdir(dirname($file), 0777, true);
-            
+
             $elements = [];
-            
+
             foreach($endpoints->elements() as $element)
             {
                 /** @var EndpointObject $element */
                 $id = $element->getId();
                 $elements[$id] = $element;
             }
-            
+
             $elements["_cached"] = (new \DateTime())->format("c");
-            
+
             file_put_contents($file, json_encode($elements, self::CACHE_JSON_OPTIONS));
         }
-        
-        
-        
+
+
+
         // Finally, return the collection of EndpointObjects!
         return $endpoints;
     }
-    
+
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * Sends an HTTP GET Request using the calling class's annotated information, for a single object, given the ID.
      *
@@ -321,50 +320,50 @@ abstract class EndpointObject extends RestObject
     {
         if($id === null)
             return null;
-        
+
         // Get a reference to the type of EndpointObject calling this function.
         $class = get_called_class();
-        
+
         // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getClassAnnotation("Endpoint");
-        
+
         // Make certain we have found a valid set of GET annotations, or throw an error!
         if(!array_key_exists("getById", $endpoints))
             throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] An '@Endpoint { \"getById\": \"/examples/:id\" }' annotation on ".
                 "the '$class' class must be declared in order to resolve this endpoint'");
-        
+
         $cached = $annotations->hasClassAnnotation("Cached");
-        
+
         if(RestClient::cacheDir() !== null && $cached)
         {
             $file = RestClient::cachePath($class);
-            
+
             if(file_exists($file))
             {
                 $objects = json_decode(file_get_contents($file), true);
                 //unset($objects["_cached"]);
                 //$objects = array_values($objects);
                 $object = $objects[$id];
-                
+
                 $endpoint = new $class($object);
-                
+
                 return $endpoint;
             }
-            
+
         }
-        
+
         // Interpolate the URL patterns against any provided parameters.
         $endpoint = Patterns::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
-        
+
         // Attempt to GET the specified EndpointObject.
         $response = RestClient::get($endpoint);
-        
+
         // IF the response is empty...
         if($response === [])
             // THEN return NULL, as we got nothing back!
             return null;
-        
+
         // HANDLE ANY ERROR CODES HERE...
         if(array_key_exists("code", $response))
         {
@@ -374,21 +373,21 @@ abstract class EndpointObject extends RestObject
                 case 401: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] The REST Client was not authorized to make this request!");
                 case 403: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] The provided App Key does not have sufficient privileges!");
                 case 404: throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] EndpointObject '$endpoint' was not found for class '$class'!");
-                
+
                 // TODO: Add other response codes, as they are encountered!
-                
+
                 default:  break; // Likely the key "code" from an actual EndpointObject!
             }
         }
-        
+
         // Finally, return the instantiated EndpointObject!
         return new $class($response);
     }
-    
+
     // =================================================================================================================
     // UPDATE (GLOBAL)
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * Attempts to UPDATE this EndpointObject, using the class's annotated information via a HTTP PATCH Request.
      *
@@ -400,21 +399,21 @@ abstract class EndpointObject extends RestObject
     {
         /** @var self $data */
         $data = $this;
-        
+
         if(!$this->validate("patch", $missing))
         {
             throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] Annotations for the '".get_class($this)."' class require valid values be set ".
                 "on all of the following properties before attempting an update():\n> ".implode("\n> ", $missing)."\n");
         }
-        
+
         /** @var self $endpoint */
         $endpoint = self::patch($data, [ "id" => $this->getId() ]);
-        
+
         return $endpoint;
     }
-    
+
     // -----------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * Sends a HTTP PATCH Request on behalf of the EndpointObject, given optional parameters and a suffix, if desired.
      *
@@ -429,37 +428,37 @@ abstract class EndpointObject extends RestObject
     {
         // Get a reference to the type of EndpointObject calling this function.
         $class = get_called_class();
-        
+
         // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getClassAnnotation("Endpoint");
-        
+
         $endpoint = array_key_exists("patch", $endpoints) ? $endpoints["patch"] : null;
-        
+
         if($endpoint === null || $endpoint === [])
             throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] An annotation like '@Endpoint { \"patch\": \"/examples/:id\" }' on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
-        
+
         // Interpolate the URL patterns against any provided parameters.
         $endpoint = Patterns::interpolateUrl($endpoints["patch"], $params);
-        
+
         // Append any provided suffixes to the URL.
         if($suffix !== "")
             $endpoint .= $suffix;
-        
+
         // Get an array of all Model properties, with any that do not belong in the PATCH method removed!
         $data = ($data !== null) ? $data->toArray("patch") : [];
-        
+
         // Attempt to PATCH the specified EndpointObject.
         $response = RestClient::patch($endpoint, $data);
-        
+
         // IF the response is empty, something went VERY wrong!
         if($response === [])
         {
             throw new \Exception("WTF???");
             //return [];
         }
-        
+
         // HANDLE ANY ERROR CODES HERE...
         if(array_key_exists("code", $response))
         {
@@ -473,76 +472,76 @@ abstract class EndpointObject extends RestObject
                     $response["message"]."\n".
                     json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
                 );
-                
+
                 // TODO: Add other response codes, as they are encountered!
-                
+
                 default:  break; // Likely the key "code" from an actual EndpointObject!
             }
         }
-        
+
         // Finally, return the instantiated EndpointObject!
         return new $class($response);
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     public function remove(): bool
     {
         /** @var self $data */
         $data = $this;
-        
+
         //if(!$this->validate("delete", $missing))
         //{
         //    throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] Annotations for the '".get_class($this)."' class require valid values be set ".
         //        "on all of the following properties before attempting an update():\n> ".implode("\n> ", $missing)."\n");
         //}
-        
+
         $deleted = self::delete($data, [ "id" => $this->getId() ]);
-        
+
         return $deleted;
     }
-    
-    
-    
-    
+
+
+
+
     public static function delete(?EndpointObject $data, array $params = [], string $suffix = ""): bool
     {
         // Get a reference to the type of EndpointObject calling this function.
         $class = get_called_class();
-        
+
         // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getClassAnnotation("Endpoint");
-        
+
         $endpoint = array_key_exists("delete", $endpoints) ? $endpoints["delete"] : null;
-        
+
         if($endpoint === null || $endpoint === [])
             throw new \Exception("[MVQN\REST\Endpoints\EndpointObject] An annotation like '@Endpoint { \"delete\": \"/examples/:id\" }' on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
-        
+
         // Interpolate the URL patterns against any provided parameters.
         $endpoint = Patterns::interpolateUrl($endpoints["delete"], $params);
-        
+
         // Append any provided suffixes to the URL.
         if($suffix !== "")
             $endpoint .= $suffix;
-        
+
         // Get an array of all Model properties, with any that do not belong in the PATCH method removed!
         //$data = ($data !== null) ? $data->toArray("delete") : [];
-        
+
         // Attempt to PATCH the specified EndpointObject.
         $response = RestClient::delete($endpoint);
-        
+
         // IF the response is empty, something went VERY wrong!
         //if($response === [])
         //{
         //    throw new \Exception("WTF???");
         //    //return [];
         //}
-        
+
         // HANDLE ANY ERROR CODES HERE...
         if(array_key_exists("code", $response))
         {
@@ -556,16 +555,16 @@ abstract class EndpointObject extends RestObject
                     $response["message"]."\n".
                     json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
                 );
-                
+
                 // TODO: Add other response codes, as they are encountered!
-                
+
                 default:  break; // Likely the key "code" from an actual EndpointObject!
             }
         }
-        
+
         // Finally, return the instantiated EndpointObject!
         return true;
     }
-    
-    
+
+
 }
