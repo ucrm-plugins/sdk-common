@@ -32,21 +32,6 @@
     "require-dev": {
         "phpunit/phpunit": "^9"
     },
-    "autoload": {
-        "psr-4": {
-            "SpaethTech\\UCRM\\SDK\\": [
-                "src/"
-            ]
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "SpaethTech\\UCRM\\SDK\\": [
-                "src/",
-                "tests/"
-            ]
-        }
-    },
     "repositories": [
         {
             "type": "path",
