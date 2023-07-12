@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace SpaethTech\UCRM\SDK;
 
+use Plugin;
 use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
 
 /**

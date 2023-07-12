@@ -6,6 +6,7 @@ namespace SpaethTech\UCRM\SDK;
 use App\Settings;
 use Dotenv\Dotenv;
 use Exception;
+use Plugin;
 use ReflectionException;
 use SpaethTech\UCRM\SDK\Data\Database;
 use SpaethTech\UCRM\SDK\Dynamics\AutoObject;

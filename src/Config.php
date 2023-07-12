@@ -4,15 +4,16 @@ declare(strict_types=1);
 namespace SpaethTech\UCRM\SDK;
 
 use App\Settings;
+use Data\Tables\OptionTable;
 use Defuse\Crypto\Exception\BadFormatException;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\Key;
 use Dotenv\Dotenv;
 use PDO;
+use Plugin;
 use ReflectionException;
 use SpaethTech\UCRM\SDK\Data\Database;
-use SpaethTech\UCRM\SDK\Data\Tables\OptionTable;
 use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
 use SpaethTech\UCRM\SDK\Exceptions\CryptoKeyNotFoundException;
 use SpaethTech\UCRM\SDK\Exceptions\DatabaseConnectionException;
