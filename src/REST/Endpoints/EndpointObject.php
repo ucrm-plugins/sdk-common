@@ -8,8 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use SpaethTech\UCRM\SDK\Annotations\AnnotationReader;
 use SpaethTech\UCRM\SDK\REST\RestClient;
 use SpaethTech\UCRM\SDK\REST\RestObject;
-use SpaethTech\UCRM\SDK\Support\Arrays;
 use SpaethTech\UCRM\SDK\Support\Strings;
+use src\Support\ArrayHelper;
 
 /**
  * EndpointObject
@@ -261,7 +261,7 @@ abstract class EndpointObject extends RestObject
         }
 
         // Handle shifting any single object responses into a single indexed array for further processing.
-        $response = Arrays::is_assoc($response) ? [ $response ] : $response;
+        $response = ArrayHelper::is_assoc($response) ? [ $response ] : $response;
 
         // Create a collection to store the object versions of the response.
         $endpoints = new Collection($class);
