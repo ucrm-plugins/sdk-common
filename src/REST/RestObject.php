@@ -9,6 +9,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use SpaethTech\UCRM\SDK\Annotations\AnnotationReader;
 use SpaethTech\UCRM\SDK\Dynamics\AutoObject;
+use SpaethTech\UCRM\SDK\JSON\JsonObject;
 use SpaethTech\UCRM\SDK\Support\Strings;
 use src\Support\ArrayHelper;
 
@@ -160,7 +161,7 @@ class RestObject extends AutoObject implements JsonSerializable
                     //$type = self::LOOKUP_NAMESPACE."\\$type";
                     $type = $annotations->findAnnotationClass($type);
                     //$base = self::LOOKUP_NAMESPACE."\\Lookup";
-                    $base = RestObject::class;
+                    $base = JsonObject::class;
 
                     // IF the current property's type is a child of 'Lookup'...
                     if(is_subclass_of($type, $base, true))
@@ -178,7 +179,7 @@ class RestObject extends AutoObject implements JsonSerializable
                         // Loop through each child class object...
                         foreach($children as $child)
                         {
-                            /** @var RestObject $child */
+                            /** @var JsonObject $child */
 
                             // IF the current child's value is NOT an array...
                             if(!is_array($child))

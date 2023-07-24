@@ -6,8 +6,8 @@ namespace SpaethTech\UCRM\SDK\REST\Endpoints;
 use Collection;
 use Psr\Http\Message\ResponseInterface;
 use SpaethTech\UCRM\SDK\Annotations\AnnotationReader;
+use SpaethTech\UCRM\SDK\JSON\JsonObject;
 use SpaethTech\UCRM\SDK\REST\RestClient;
-use SpaethTech\UCRM\SDK\REST\RestObject;
 use SpaethTech\UCRM\SDK\Support\Strings;
 use src\Support\ArrayHelper;
 
@@ -18,7 +18,7 @@ use src\Support\ArrayHelper;
  * @copyright 2022 Spaeth Technologies Inc.
  *
  */
-abstract class EndpointObject extends RestObject
+abstract class EndpointObject extends JsonObject
 {
     /** @const int The default JSON options for use when caching the annotations. */
     private const CACHE_JSON_OPTIONS = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT;
